@@ -5,62 +5,26 @@
 	<title>הסדנא לידע ציבורי</title>
 <link rel='shortcut icon' href='http://blog.yeda.us/wp-content/themes/p2/favicon.ico'> 
 	<style>
-		p#rellinks {display:none; position:absolute; top:118px; width:100%; text-align: center;}
-                p#rellinks a:hover img { opacity: 1.0; }
-                p#rellinks a img { opacity: 0.6; }
+		p#rellinks { width:100%; text-align: center;}
+    p#rellinks a:hover img { opacity: 1.0; }
+    p#rellinks a img { opacity: 0.6; }
 		canvas#logo:hover { cursor: pointer}
 	</style>
   <script type="text/javascript"
    src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
   <script type="application/javascript">  
-    var r = 100;
-	var step = 0;
-	var ctx;
-    function init() {
+    var r = 120;
+    var step = 0;
+    var ctx;
+    // draw the logo when dom is ready
+    $(function () {
     	ctx = document.getElementById('logo').getContext('2d');
-		drawLogo();
-		var watchDog = setTimeout(openLogo, 5000);
-		$('#logo').click(function () {
-			if (r==100) {
-				clearTimeout(watchDog);
-				openLogo();
-			}
-			else {
-				$('#rellinks').hide();
-				closeLogo();
-			}
-
-		})
-    }
-    function closeLogo() {
-		ctx.globalCompositeOperation = 'destination-over';
-		ctx.clearRect(0,0,300,300); // clear canvas
-		r -= 2;
-		step -= Math.PI/36;
-		drawLogo();
-		if (r > 100)
-			setTimeout(closeLogo, 20);
-    }
-	
-    function openLogo() {
-		ctx.globalCompositeOperation = 'destination-over';
-		ctx.clearRect(0,0,300,300); // clear canvas
-		r += 2;
-		step += Math.PI/36;
-		drawLogo();
-		if (r < 280)
-			setTimeout(openLogo, 20);
-		else 
-			$('#rellinks').show();
-    }
-
-    function drawLogo() {  
         var edge = Math.PI/13;  /* size of half a typical's line edge in radians */
         var base = edge*3;      /* size of half of the base in radians */
         var innerCircle = Math.ceil(r/4);  /* radius of the inner circle in pixels */
         /* move our center to the circle's center */
         ctx.save();
-        ctx.translate(150,150);
+        ctx.translate(150,120);
         /* by using rotate, we can keep working around angle 0 */
         ctx.rotate(Math.PI/2+step);
         /* basic setup, line and fill color and line width */
@@ -99,10 +63,10 @@
         ctx.arc(0,0, innerCircle, 0, Math.PI*2, false);
         ctx.fill();
         ctx.restore();
-    }  
+    }  )
   </script>  
  </head>  
- <body onload="init();">  
+ <body>  
    <div style="color: #25407B; direction: rtl; width:90%; margin: 1em auto; text-align: center;">
 	<p style="float:right; margin:0;">
 אתרים בפיתוח: 
@@ -159,8 +123,8 @@ new TWTR.Widget({
 </script>
      </div>
 	   <div style="float: right; position:relative;">
-       <canvas id="logo" width="300" height="300"></canvas>
-       <p id="rellinks" style=""> 
+       <canvas id="logo" width="300" height="240"></canvas>
+       <p id="rellinks"> 
         <a rel="me" title="Group" href="http://groups.google.com/group/hasadna11"><img alt="Group" src="media/img/icons/group.png" width="32" height="32"></a> 
         <a rel="me" title="Twitter" href="http://twitter.com/hasadna"><img alt="Twitter" src="media/img/icons/twitter.png" width="32" height="32"></a> 
         <a rel="me" title="Blog" href="http://blog.yeda.us"><img alt="Blog" src="media/img/icons/blog.png" width="32" height="32"></a> 
