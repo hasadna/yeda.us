@@ -31,6 +31,7 @@ import getpass
 import gdata.docs.service
 import gdata.spreadsheet.service
 
+from slugify_hebrew import slugify
 
 def truncate(content, length=15, suffix='...'):
   if len(content) <= length:
@@ -78,6 +79,8 @@ class DocsPublisher(object):
       doc['resource_id'] = entry.resourceId.text
       doc['type'] = entry.GetDocumentType()
       doc['title'] = entry.title.text.decode('utf8')
+      doc['slug'] = slugify(doc['title'])
+      doc['updated'] = entry.updated.text
       print doc['resource_id']
       if doc['type']=='document':
           self.gd_client.Export(entry, "temp.html")
@@ -121,7 +124,7 @@ class DocsPublisher(object):
             feed = self.gd_client.Query(query.ToUri())
             path = '%s/%s' % (folder, folder_name)
             self._ParseFeed(feed, {'path':path.decode('utf8')})
-    print json.dumps(self.docs)
+    return json.dumps(self.docs)
 
 def main():
   """Demonstrates use of the Docs extension using the DocsSample object."""
@@ -131,6 +134,7 @@ def main():
   except getopt.error, msg:
     print 'python docs_example.py --user [username] --pw [password] '
     sys.exit(2)
+
 
   user = ''
   pw = ''
@@ -156,7 +160,9 @@ def main():
     print 'Invalid user credentials given.'
     return
 
-  pub.publish_docs()
+  out = open("docs.json", "w")
+  out.write(pub.publish_docs())
+  out.close()
 
 if __name__ == '__main__':
   main()
